@@ -8,4 +8,4 @@
  #
  # Main module of the application.
 ###
-angular.module('demoApp', ["ui.router"])
+angular.module('demoApp', ["ui.router", "ngResource"])

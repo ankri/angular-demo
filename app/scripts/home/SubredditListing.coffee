@@ -1,6 +1,12 @@
-angular.module("demoApp").factory("subredditListing", ["$http", "$q", "$filter", ($http, $q, $filter) ->
+angular.module("demoApp").factory("subredditListing", ["$q", "$filter", "$resource", ($q, $filter, $resource) ->
 
 	domainFilter = $filter("domainFilter")
+
+
+	subredditResource = $resource(	"https://reddit.com/r/:subredditName.json", 
+							{ subredditName: "@subredditName", jsonp: "JSON_CALLBACK" }, 
+							{loadSubreddit: {method: 'JSONP'}}
+						)
 
 	subredditListing =
 		getSubreddit: (subredditName, after) ->
@@ -10,9 +16,12 @@ angular.module("demoApp").factory("subredditListing", ["$http", "$q", "$filter",
 				params:
 					after: after
 
-			$http.jsonp("https://reddit.com/r/#{subredditName}.json?jsonp=JSON_CALLBACK", options).then(
+			subredditResource.loadSubreddit({subredditName: subredditName}).$promise.then(
+				(response) ->
+					return response
+			).then(
 				(response) =>
-					return response.data.data.children
+					return response.data.children
 			).then(
 				(posts) ->
 					return domainFilter(posts, "self.")
