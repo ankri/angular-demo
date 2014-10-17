@@ -1,0 +1,18 @@
+<div>
+	<div ng-hide="home.isLoading">
+		<h1>Posts from r/angularjs</h1>
+		<ul class="list-group">
+			<li class="list-group-item clearfix" ng-repeat="post in home.posts" ng-class="{'li-odd': $odd}">
+				<reddit-post post="post"></reddit-post>
+			</li>
+		</ul>
+		<hr>
+	</div>
+	<div class="loading" ng-show="home.isLoading || home.isLoadingMore">
+		<i class="fa fa-spinner fa-spin spinner"></i> <br>
+
+		Loading posts for r/angularjs
+	</div>
+	<button class="btn btn-default" ng-click="home.loadMorePosts()" ng-hide="home.isLoading || home.isLoadingMore">load more</button>
+
+</div>
